@@ -168,7 +168,10 @@ function initCursor() {
 
   document.addEventListener('pointerover', (e) => {
     const target = (e.target as HTMLElement).closest('[data-cursor="play"]');
-    cursor.classList.toggle('is-active', Boolean(target));
+    // Once the embed is activated, YouTube's own controls take over — don't
+    // float our "Play" disc on top of them.
+    const alreadyPlaying = target?.querySelector('lite-youtube.lyt-activated');
+    cursor.classList.toggle('is-active', Boolean(target) && !alreadyPlaying);
   });
 }
 

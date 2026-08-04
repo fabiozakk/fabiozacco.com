@@ -25,7 +25,11 @@ const posterStyle = thumbnail
   data-cursor="play"
 >
   <div class="video-card__frame">
-    <lite-youtube videoid={id} params="rel=0" style={posterStyle}>
+    <lite-youtube
+      videoid={id}
+      params="rel=0&modestbranding=1&color=white&iv_load_policy=3&cc_load_policy=0"
+      style={posterStyle}
+    >
       <span class="visually-hidden">Play: {title} on YouTube</span>
     </lite-youtube>
   </div>
@@ -66,7 +70,14 @@ const posterStyle = thumbnail
   lite-youtube {
     background-color: var(--surface);
     width: 100%;
+    max-width: none; /* the library's own default caps this at 720px */
     aspect-ratio: 16 / 9;
+  }
+
+  /* Once a video is playing, its own YouTube controls take over — stop
+     floating our custom "Play" cursor on top of them. */
+  .video-card:has(lite-youtube.lyt-activated) {
+    cursor: auto;
   }
 
   .video-card__title {
