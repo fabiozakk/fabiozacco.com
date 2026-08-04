@@ -1,0 +1,115 @@
+---
+interface Props {
+  name: string;
+}
+const { name } = Astro.props;
+
+const links = [
+  { href: '#bio', label: 'About' },
+  { href: '#playing', label: 'Playing' },
+  { href: '#scoring', label: 'Scoring' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+
+<header class="nav">
+  <div class="nav__inner container">
+    <a href="#top" class="nav__mark">{name}</a>
+    <nav aria-label="Primary">
+      <ul class="nav__links">
+        {
+          links.map((link) => (
+            <li>
+              <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 40;
+    padding-block: var(--space-sm);
+    background: linear-gradient(to bottom, rgba(10, 10, 11, 0.85), transparent);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+  }
+
+  .nav__mark {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .nav__links {
+    display: flex;
+    gap: clamp(1rem, 2vw, 2.5rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav__links a {
+    position: relative;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .nav__links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.35em;
+    width: 100%;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+
+  .nav__links a:hover,
+  .nav__links a:focus-visible {
+    color: var(--fg);
+  }
+
+  .nav__links a:hover::after,
+  .nav__links a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  @media (max-width: 40em) {
+    .nav__inner {
+      flex-wrap: wrap;
+      row-gap: 0.6rem;
+    }
+
+    .nav__links {
+      gap: 0.65rem 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .nav__mark {
+      font-size: 1.1rem;
+    }
+  }
+</style>

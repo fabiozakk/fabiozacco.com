@@ -1,0 +1,150 @@
+# Sveltia CMS configuration — https://sveltiacms.app/en/docs
+#
+# Backend: GitHub. Once this site is deployed on Netlify and linked to the
+# repo below, Netlify's built-in OAuth handles login automatically — no
+# extra setup. Not using Netlify? See README.md for the Cloudflare Workers
+# OAuth proxy (sveltia-cms-auth) or the "Sign In with Token" fallback.
+#
+# For local editing (no GitHub login at all): open /admin/index.html in
+# Chrome or Edge while `npm run dev` is running, and choose
+# "Work with Local Repository" — Sveltia edits the files on disk directly
+# via the File System Access API.
+backend:
+  name: github
+  repo: OWNER/REPO # TODO: replace with the real "owner/repo" before deploying
+  branch: main
+
+# Where Sveltia looks for an existing entry's images when no per-field
+# media_folder is set below. Every field that needs one overrides it with a
+# path relative to its own content file, matching what Astro's image()
+# schema helper expects.
+media_folder: "src/assets"
+public_folder: "/src/assets"
+
+collections:
+  - name: settings
+    label: "Settings"
+    editor:
+      preview: false
+    files:
+      - name: site
+        label: "Site"
+        file: src/content/settings/site.yml
+        fields:
+          - { label: "Name", name: name, widget: string }
+          - { label: "Tagline", name: tagline, widget: string }
+          - label: "SEO description"
+            name: seoDescription
+            widget: text
+            hint: "Used for search engines and social link previews."
+          - { label: "Contact email", name: email, widget: string }
+          - { label: "Location", name: location, widget: string, required: false }
+          - label: "Social links"
+            name: social
+            widget: list
+            summary: "{{fields.label}}"
+            fields:
+              - { label: "Label", name: label, widget: string }
+              - { label: "URL", name: url, widget: string }
+
+      - name: hero
+        label: "Hero"
+        file: src/content/settings/hero.yml
+        fields:
+          - { label: "Headline", name: headline, widget: string }
+          - { label: "Subhead", name: subhead, widget: string }
+          - label: "Background video URL"
+            name: video
+            widget: string
+            required: false
+            hint: "Leave empty to show the image slideshow below instead. Paste a direct .mp4 URL (e.g. hosted on your video CDN) — not a YouTube link."
+          - label: "Poster image"
+            name: poster
+            widget: image
+            media_folder: "../../assets/hero"
+            public_folder: "../../assets/hero"
+            hint: "Shown on mobile, with reduced motion, and while the video loads."
+          - label: "Slideshow images"
+            name: images
+            widget: list
+            hint: "Used only when the background video above is empty."
+            field:
+              label: "Image"
+              name: image
+              widget: image
+              media_folder: "../../assets/hero"
+              public_folder: "../../assets/hero"
+          - { label: "Seconds per slide", name: interval, widget: number, value_type: int, default: 5 }
+
+      - name: bio
+        label: "Bio"
+        file: src/content/settings/bio.md
+        fields:
+          - label: "Portrait"
+            name: portrait
+            widget: image
+            media_folder: "../../assets/bio"
+            public_folder: "../../assets/bio"
+          - { label: "Bio text", name: body, widget: markdown }
+
+  - name: playing
+    label: "Playing"
+    label_singular: "Playing video"
+    folder: src/content/playing
+    create: true
+    slug: "{{fields.order}}-{{slug}}"
+    summary: "{{title}} ({{year}})"
+    fields:
+      - { label: "Title", name: title, widget: string }
+      - label: "YouTube video"
+        name: youtube
+        widget: string
+        hint: "Paste any YouTube URL (full link or youtu.be) or just the video ID."
+      - { label: "Role / instrument", name: role, widget: string, required: false }
+      - { label: "Year", name: year, widget: number, value_type: int, required: false }
+      - label: "Order"
+        name: order
+        widget: number
+        value_type: int
+        default: 0
+        hint: "Lower numbers appear first."
+      - { label: "Featured (full-width card)", name: featured, widget: boolean, default: false }
+      - label: "Thumbnail override"
+        name: thumbnail
+        widget: image
+        required: false
+        media_folder: "../../assets/videos"
+        public_folder: "../../assets/videos"
+        hint: "Optional — by default the YouTube thumbnail is used."
+      - { label: "Note", name: body, widget: markdown, required: false }
+
+  - name: scoring
+    label: "Scoring"
+    label_singular: "Scoring video"
+    folder: src/content/scoring
+    create: true
+    slug: "{{fields.order}}-{{slug}}"
+    summary: "{{title}} ({{year}})"
+    fields:
+      - { label: "Title", name: title, widget: string }
+      - label: "YouTube video"
+        name: youtube
+        widget: string
+        hint: "Paste any YouTube URL (full link or youtu.be) or just the video ID."
+      - { label: "Role", name: role, widget: string, required: false }
+      - { label: "Year", name: year, widget: number, value_type: int, required: false }
+      - label: "Order"
+        name: order
+        widget: number
+        value_type: int
+        default: 0
+        hint: "Lower numbers appear first."
+      - { label: "Featured (full-width card)", name: featured, widget: boolean, default: false }
+      - label: "Thumbnail override"
+        name: thumbnail
+        widget: image
+        required: false
+        media_folder: "../../assets/videos"
+        public_folder: "../../assets/videos"
+        hint: "Optional — by default the YouTube thumbnail is used."
+      - { label: "Note", name: body, widget: markdown, required: false }

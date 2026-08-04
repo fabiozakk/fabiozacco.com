@@ -1,0 +1,195 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+p,
+figure {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+.container {
+  width: var(--container);
+  margin-inline: auto;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: var(--space-md);
+  z-index: 1000;
+  padding: 0.75em 1.25em;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--dur-fast) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  top: var(--space-sm);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+section {
+  position: relative;
+  padding-block: var(--space-section);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ---------------------------------------------------------------------- */
+/* Motion: reveal, parallax, custom cursor.                               */
+/* Base state is always fully visible — JS only arms the hidden state     */
+/* (see src/scripts/motion.ts), so no-JS / reduced-motion users never     */
+/* lose content.                                                          */
+/* ---------------------------------------------------------------------- */
+
+.reveal {
+  transition:
+    opacity var(--dur-base) var(--ease-out),
+    transform var(--dur-base) var(--ease-out);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+}
+
+.reveal.reveal-armed {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.reveal.reveal-armed.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-line {
+  display: inline-block;
+  transition:
+    clip-path var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--reveal-i, 0) * 90ms);
+}
+
+.reveal-line.reveal-armed {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(30%);
+}
+
+.reveal-line.reveal-armed.is-visible {
+  clip-path: inset(0 0 0% 0);
+  transform: none;
+}
+
+[data-parallax] {
+  transform: translate3d(0, var(--parallax-y, 0), 0);
+  will-change: transform;
+}
+
+.play-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(18, 18, 20, 0.7);
+  backdrop-filter: blur(4px);
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-9999px, -9999px, 0);
+  transition: opacity var(--dur-fast) var(--ease-out), scale var(--dur-fast) var(--ease-out);
+  scale: 0.7;
+}
+
+.play-cursor.is-active {
+  opacity: 1;
+  scale: 1;
+}
+
+html.motion-on body {
+  cursor: default;
+}

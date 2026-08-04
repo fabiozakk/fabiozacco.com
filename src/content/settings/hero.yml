@@ -1,0 +1,11 @@
+# Leave `video` empty to show the image slideshow instead.
+# `poster` is also used as the mobile / reduced-motion fallback image.
+headline: "Fabio Zacco"
+subhead: "Composer & Multi-instrumentalist"
+video: ""
+poster: ../../assets/hero/poster.jpg
+images:
+  - ../../assets/hero/01.jpg
+  - ../../assets/hero/02.jpg
+  - ../../assets/hero/03.jpg
+interval: 5

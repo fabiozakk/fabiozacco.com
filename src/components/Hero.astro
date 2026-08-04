@@ -1,0 +1,153 @@
+---
+import { Image } from 'astro:assets';
+import HeroSlideshow from './HeroSlideshow.astro';
+
+interface Props {
+  headline: string;
+  subhead: string;
+  video: string;
+  poster: ImageMetadata;
+  images: ImageMetadata[];
+  interval: number;
+}
+
+const { headline, subhead, video, poster, images, interval } = Astro.props;
+const words = headline.split(' ');
+---
+
+<section id="top" class="hero">
+  <div class="hero__media" data-parallax>
+    {
+      video ? (
+        <>
+          <video class="hero__video" autoplay muted loop playsinline poster={poster.src}>
+            <source src={video} type="video/mp4" />
+          </video>
+          <Image
+            src={poster}
+            alt=""
+            class="hero__poster"
+            widths={[640, 1024, 1600, 2400]}
+            sizes="100vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </>
+      ) : (
+        <HeroSlideshow images={images} interval={interval} />
+      )
+    }
+  </div>
+
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <div class="hero__content container">
+    <h1 class="hero__headline display">
+      {
+        words.map((word, i) => (
+          <span class="reveal-line hero__word" data-reveal-immediate style={`--reveal-i: ${i}`}>
+            {word}
+            {i < words.length - 1 ? ' ' : ''}
+          </span>
+        ))
+      }
+    </h1>
+    <p class="reveal hero__subhead eyebrow" data-reveal-immediate style={`--reveal-i: ${words.length}`}>
+      {subhead}
+    </p>
+  </div>
+
+  <div class="hero__cue" aria-hidden="true">
+    <span class="hero__cue-line"></span>
+    <span class="eyebrow">Scroll</span>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 560px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    padding-block: var(--space-lg);
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: -8% 0;
+  }
+
+  .hero__video,
+  .hero__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__poster {
+    display: none;
+  }
+
+  @media (max-width: 40em), (prefers-reduced-motion: reduce) {
+    .hero__video {
+      display: none;
+    }
+    .hero__poster {
+      display: block;
+    }
+  }
+
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to top, var(--bg) 0%, rgba(10, 10, 11, 0.2) 45%, rgba(10, 10, 11, 0.55) 100%),
+      radial-gradient(120% 60% at 50% 100%, rgba(10, 10, 11, 0.4), transparent);
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__headline {
+    font-size: var(--fs-display);
+    color: var(--fg);
+  }
+
+  .hero__word {
+    display: inline-block;
+  }
+
+  .hero__subhead {
+    margin-top: var(--space-sm);
+    color: var(--muted);
+  }
+
+  .hero__cue {
+    position: absolute;
+    right: var(--space-lg);
+    bottom: var(--space-lg);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--muted);
+  }
+
+  .hero__cue-line {
+    width: 1px;
+    height: 2.5rem;
+    background: var(--line);
+  }
+
+  @media (max-width: 40em) {
+    .hero__cue {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,85 @@
+---
+import { getImage } from 'astro:assets';
+
+interface Props {
+  id: string;
+  title: string;
+  role?: string;
+  year?: number;
+  featured?: boolean;
+  thumbnail?: ImageMetadata;
+  index?: number;
+}
+
+const { id, title, role, year, featured = false, thumbnail, index = 0 } = Astro.props;
+
+const posterStyle = thumbnail
+  ? `background-image:url(${(await getImage({ src: thumbnail, width: 800 })).src})`
+  : undefined;
+---
+
+<article
+  class:list={['reveal', 'video-card', featured && 'video-card--featured']}
+  style={`--reveal-i: ${index}`}
+  data-reveal
+  data-cursor="play"
+>
+  <div class="video-card__frame">
+    <lite-youtube videoid={id} params="rel=0" style={posterStyle}>
+      <span class="visually-hidden">Play: {title} on YouTube</span>
+    </lite-youtube>
+  </div>
+  <div class="video-card__meta">
+    <h3 class="video-card__title">{title}</h3>
+    {(role || year) && (
+      <p class="video-card__role">
+        {role}
+        {role && year ? ' — ' : ''}
+        {year}
+      </p>
+    )}
+  </div>
+</article>
+
+<style>
+  .video-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .video-card--featured {
+    grid-column: 1 / -1;
+  }
+
+  .video-card__frame {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+
+  .video-card:hover .video-card__frame {
+    transform: scale(1.015);
+  }
+
+  lite-youtube {
+    background-color: var(--surface);
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-card__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .video-card__role {
+    margin-top: 0.35em;
+    font-size: var(--fs-small);
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+</style>

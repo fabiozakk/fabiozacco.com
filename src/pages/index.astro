@@ -1,0 +1,102 @@
+---
+import { getCollection, render } from 'astro:content';
+import 'lite-youtube-embed/src/lite-yt-embed.css';
+
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Bio from '../components/Bio.astro';
+import VideoSection from '../components/VideoSection.astro';
+import Marquee from '../components/Marquee.astro';
+import Contact from '../components/Contact.astro';
+import Grain from '../components/Grain.astro';
+import { extractYouTubeId } from '../lib/youtube';
+
+const [siteEntry] = await getCollection('site');
+const [heroEntry] = await getCollection('hero');
+const [bioEntry] = await getCollection('bio');
+
+const site = siteEntry.data;
+const hero = heroEntry.data;
+const { Content: BioContent } = await render(bioEntry);
+
+async function loadVideos(collection: 'playing' | 'scoring') {
+  const entries = await getCollection(collection);
+  return entries
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((entry) => {
+      const id = extractYouTubeId(entry.data.youtube);
+      if (!id) {
+        console.warn(
+          `[${collection}] "${entry.data.title}" (${entry.id}) has an invalid youtube value: "${entry.data.youtube}" — skipped.`,
+        );
+        return null;
+      }
+      return {
+        id,
+        title: entry.data.title,
+        role: entry.data.role,
+        year: entry.data.year,
+        featured: entry.data.featured,
+        thumbnail: entry.data.thumbnail,
+      };
+    })
+    .filter((v): v is NonNullable<typeof v> => v !== null);
+}
+
+const playing = await loadVideos('playing');
+const scoring = await loadVideos('scoring');
+
+const marqueeItems = ['Composition', 'Live Performance', 'Scoring', 'Arrangement', 'Production'];
+---
+
+<Base>
+  <Grain />
+  <div class="play-cursor" data-play-cursor aria-hidden="true">
+    <span>Play</span>
+  </div>
+
+  <Nav name={site.name} />
+
+  <main id="main">
+    <Hero
+      headline={hero.headline}
+      subhead={hero.subhead}
+      video={hero.video}
+      poster={hero.poster}
+      images={hero.images}
+      interval={hero.interval}
+    />
+
+    <Bio portrait={bioEntry.data.portrait} name={site.name}>
+      <BioContent />
+    </Bio>
+
+    <Marquee items={marqueeItems} />
+
+    <VideoSection
+      id="playing"
+      number="02"
+      title="Playing"
+      description="Live performances, sessions, and stage work."
+      entries={playing}
+    />
+
+    <VideoSection
+      id="scoring"
+      number="03"
+      title="Scoring"
+      description="Original music for film, documentary, and picture."
+      entries={scoring}
+    />
+
+    <Marquee items={marqueeItems} />
+
+    <Contact email={site.email} location={site.location} social={site.social} />
+  </main>
+
+  <script>
+    import 'lite-youtube-embed';
+  </script>
+  <script src="../scripts/motion.ts"></script>
+</Base>
