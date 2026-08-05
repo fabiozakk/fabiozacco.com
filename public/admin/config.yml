@@ -11,7 +11,7 @@
 # via the File System Access API.
 backend:
   name: github
-  repo: OWNER/REPO # TODO: replace with the real "owner/repo" before deploying
+  repo: fabiozakk/fabiozacco.com
   branch: main
 
 # Where Sveltia looks for an existing entry's images when no per-field
