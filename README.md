@@ -79,25 +79,41 @@ to GitHub. Publishing a change triggers a new deploy automatically.
 
 `public/admin/config.yml` already points at this project's repo (`backend.repo`) and
 declares both locales under `i18n:` — the editor shows a language switcher on every
-bilingual entry. The one thing still needed for it to work live:
+bilingual entry.
 
-1. Deploy the site on **Netlify** (see below) and link it to that same GitHub repo —
-   Netlify's built-in OAuth then lets the CMS log in with "Sign in with GitHub", no
-   extra setup.
+### Enabling "Sign In with GitHub"
+
+Netlify does **not** provide a shared OAuth app for this; you have to register your
+own and hand Netlify its credentials. Until you do, the button fails with a bare
+`Not Found`, because `https://api.netlify.com/auth?provider=github&site_id=<domain>`
+returns 404 for a site with no OAuth provider installed.
+
+1. On GitHub: **Settings → Developer settings → OAuth Apps → New OAuth App**.
+   Homepage URL is the site (`https://fabiozacco.com`); **Authorization callback URL
+   must be `https://api.netlify.com/auth/done`**. Register it, then copy the Client
+   ID and generate a Client Secret.
+2. On Netlify: **Project configuration → Access & security → OAuth → Install
+   provider → GitHub**, and paste the Client ID and Client Secret.
+
+**No setup needed:** "Sign In Using Access Token" works immediately with a
+[GitHub personal access token](https://github.com/settings/tokens) that has `repo`
+access — a fine alternative if you'd rather not register an OAuth app.
 
 **Editing without deploying anywhere first:** run `npm run dev`, open
-`http://localhost:4321/admin` in **Chrome or Edge**, and choose **"Work with Local
-Repository"** — pick this project's folder when prompted. The CMS then reads and
-writes the files on your disk directly; commit and push normally when you're happy
-with the changes.
+`http://localhost:4321/admin/index.html` in **Chrome or Edge**, and choose **"Work
+with Local Repository"** — pick this project's root folder (the one with
+`package.json`) when prompted. The CMS then reads and writes the files on your disk
+directly; commit and push normally when you're happy with the changes. Note the
+explicit `/index.html`: the Astro dev server answers its own 404 for `/admin/`,
+though the deployed site serves it fine.
 
-**Not using Netlify?** GitHub's OAuth flow needs a small server-side proxy to keep the
-client secret out of the browser. Deploy
-[sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) (one click, free, runs
-on Cloudflare Workers) and set `backend.base_url` in `config.yml` to the worker's URL.
-Or skip OAuth entirely and use "Sign in using Token" with a
-[GitHub personal access token](https://github.com/settings/tokens) that has `repo`
-access.
+**Hosting somewhere other than Netlify?** The OAuth flow needs a server-side proxy to
+keep the client secret out of the browser. Deploy
+[sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) (free, runs on
+Cloudflare Workers) and set `backend.base_url` in `config.yml` to the worker's URL.
+
+**After changing `config.yml`,** sign out and back in — the panel caches the loaded
+config and content, so edits can otherwise appear to have no effect.
 
 ## Deploying
 

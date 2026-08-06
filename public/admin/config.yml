@@ -1,9 +1,9 @@
 # Sveltia CMS configuration — https://sveltiacms.app/en/docs
 #
-# Backend: GitHub. Once this site is deployed on Netlify and linked to the
-# repo below, Netlify's built-in OAuth handles login automatically — no
-# extra setup. Not using Netlify? See README.md for the Cloudflare Workers
-# OAuth proxy (sveltia-cms-auth) or the "Sign In with Token" fallback.
+# Backend: GitHub. "Sign In with GitHub" needs a GitHub OAuth app registered
+# and its credentials added to Netlify first — see README.md. Without that,
+# https://api.netlify.com/auth answers "Not Found" for this domain. The
+# "Sign In Using Access Token" option works with no setup at all.
 #
 # For local editing (no GitHub login at all): open /admin/index.html in
 # Chrome or Edge while `npm run dev` is running, and choose
