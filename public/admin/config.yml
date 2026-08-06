@@ -46,18 +46,24 @@ collections:
         label: "Site"
         file: src/content/settings/{{locale}}/site.yml
         i18n: true
+        # Every field needs its own `i18n` too: the field-level default is
+        # `false`, which makes the field editable in the default locale only.
+        # `true` = translate per language; `duplicate` = one shared value,
+        # copied automatically to the other language.
         fields:
-          - { label: "Name", name: name, widget: string }
-          - { label: "Tagline", name: tagline, widget: string }
+          - { label: "Name", name: name, widget: string, i18n: duplicate }
+          - { label: "Tagline", name: tagline, widget: string, i18n: true }
           - label: "SEO description"
             name: seoDescription
             widget: text
+            i18n: true
             hint: "Used for search engines and social link previews."
-          - { label: "Contact email", name: email, widget: string }
-          - { label: "Location", name: location, widget: string, required: false }
+          - { label: "Contact email", name: email, widget: string, i18n: duplicate }
+          - { label: "Location", name: location, widget: string, required: false, i18n: true }
           - label: "Social links"
             name: social
             widget: list
+            i18n: duplicate
             summary: "{{fields.label}}"
             fields:
               - { label: "Label", name: label, widget: string }
@@ -68,16 +74,18 @@ collections:
         file: src/content/settings/{{locale}}/hero.yml
         i18n: true
         fields:
-          - { label: "Headline", name: headline, widget: string }
-          - { label: "Subhead", name: subhead, widget: string }
+          - { label: "Headline", name: headline, widget: string, i18n: duplicate }
+          - { label: "Subhead", name: subhead, widget: string, i18n: true }
           - label: "Background video URL"
             name: video
             widget: string
             required: false
+            i18n: duplicate
             hint: "Leave empty to show the image slideshow below instead. Paste a direct .mp4 URL (e.g. hosted on your video CDN) — not a YouTube link."
           - label: "Poster image"
             name: poster
             widget: image
+            i18n: duplicate
             media_folder: "../../../assets/hero"
             public_folder: "../../../assets/hero"
             hint: "Shown on mobile, with reduced motion, and while the video loads."
@@ -85,10 +93,12 @@ collections:
             name: posterPosition
             widget: string
             required: false
+            i18n: duplicate
             hint: "How the poster is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
           - label: "Slideshow images"
             name: images
             widget: list
+            i18n: duplicate
             hint: "Used only when the background video above is empty."
             summary: "{{fields.image}}"
             fields:
@@ -114,7 +124,7 @@ collections:
                 widget: string
                 required: false
                 hint: "Crop position for the mobile image above, same syntax as \"Position\". Leave empty for centered."
-          - { label: "Seconds per slide", name: interval, widget: number, value_type: int, default: 5 }
+          - { label: "Seconds per slide", name: interval, widget: number, value_type: int, default: 5, i18n: duplicate }
 
       - name: bio
         label: "Bio"
@@ -124,14 +134,16 @@ collections:
           - label: "Portrait"
             name: portrait
             widget: image
+            i18n: duplicate
             media_folder: "../../../assets/bio"
             public_folder: "../../../assets/bio"
           - label: "Portrait position"
             name: portraitPosition
             widget: string
             required: false
+            i18n: duplicate
             hint: "How the portrait is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
-          - { label: "Bio text", name: body, widget: markdown }
+          - { label: "Bio text", name: body, widget: markdown, i18n: true }
 
   - name: playing
     label: "Playing"
@@ -142,24 +154,27 @@ collections:
     slug: "{{fields.order}}-{{slug}}"
     summary: "{{title}} ({{year}})"
     fields:
-      - { label: "Title", name: title, widget: string }
+      - { label: "Title", name: title, widget: string, i18n: true }
       - label: "YouTube video"
         name: youtube
         widget: string
+        i18n: duplicate
         hint: "Paste any YouTube URL (full link or youtu.be) or just the video ID."
-      - { label: "Role / instrument", name: role, widget: string, required: false }
-      - { label: "Year", name: year, widget: number, value_type: int, required: false }
+      - { label: "Role / instrument", name: role, widget: string, required: false, i18n: true }
+      - { label: "Year", name: year, widget: number, value_type: int, required: false, i18n: duplicate }
       - label: "Order"
         name: order
         widget: number
         value_type: int
         default: 0
-        hint: "Lower numbers appear first. Keep this the same across languages so the two versions of a video stay paired."
-      - { label: "Featured (full-width card)", name: featured, widget: boolean, default: false }
+        i18n: duplicate
+        hint: "Lower numbers appear first. Shared across languages, so the two versions of a video stay paired."
+      - { label: "Featured (full-width card)", name: featured, widget: boolean, default: false, i18n: duplicate }
       - label: "Thumbnail override"
         name: thumbnail
         widget: image
         required: false
+        i18n: duplicate
         media_folder: "../../../assets/videos"
         public_folder: "../../../assets/videos"
         hint: "Optional — by default the YouTube thumbnail is used."
@@ -167,8 +182,9 @@ collections:
         name: thumbnailPosition
         widget: string
         required: false
+        i18n: duplicate
         hint: "How the thumbnail is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
-      - { label: "Note", name: body, widget: markdown, required: false }
+      - { label: "Note", name: body, widget: markdown, required: false, i18n: true }
 
   - name: scoring
     label: "Scoring"
@@ -179,24 +195,27 @@ collections:
     slug: "{{fields.order}}-{{slug}}"
     summary: "{{title}} ({{year}})"
     fields:
-      - { label: "Title", name: title, widget: string }
+      - { label: "Title", name: title, widget: string, i18n: true }
       - label: "YouTube video"
         name: youtube
         widget: string
+        i18n: duplicate
         hint: "Paste any YouTube URL (full link or youtu.be) or just the video ID."
-      - { label: "Role", name: role, widget: string, required: false }
-      - { label: "Year", name: year, widget: number, value_type: int, required: false }
+      - { label: "Role", name: role, widget: string, required: false, i18n: true }
+      - { label: "Year", name: year, widget: number, value_type: int, required: false, i18n: duplicate }
       - label: "Order"
         name: order
         widget: number
         value_type: int
         default: 0
-        hint: "Lower numbers appear first. Keep this the same across languages so the two versions of a video stay paired."
-      - { label: "Featured (full-width card)", name: featured, widget: boolean, default: false }
+        i18n: duplicate
+        hint: "Lower numbers appear first. Shared across languages, so the two versions of a video stay paired."
+      - { label: "Featured (full-width card)", name: featured, widget: boolean, default: false, i18n: duplicate }
       - label: "Thumbnail override"
         name: thumbnail
         widget: image
         required: false
+        i18n: duplicate
         media_folder: "../../../assets/videos"
         public_folder: "../../../assets/videos"
         hint: "Optional — by default the YouTube thumbnail is used."
@@ -204,5 +223,6 @@ collections:
         name: thumbnailPosition
         widget: string
         required: false
+        i18n: duplicate
         hint: "How the thumbnail is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
-      - { label: "Note", name: body, widget: markdown, required: false }
+      - { label: "Note", name: body, widget: markdown, required: false, i18n: true }
