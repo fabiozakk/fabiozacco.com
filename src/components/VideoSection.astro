@@ -9,6 +9,7 @@ interface Entry {
   year?: number;
   featured?: boolean;
   thumbnail?: ImageMetadata;
+  thumbnailPosition?: string;
 }
 
 interface Props {
@@ -42,6 +43,7 @@ const copy = t.sections[section];
               year={entry.year}
               featured={entry.featured}
               thumbnail={entry.thumbnail}
+              thumbnailPosition={entry.thumbnailPosition}
               index={i}
               lang={lang}
             />

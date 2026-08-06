@@ -29,6 +29,10 @@ const site = defineCollection({
   }),
 });
 
+// A raw CSS `object-position` value (e.g. "50% 100%", "center top").
+// Empty/unset keeps the current default: centered.
+const position = z.string().optional().default('');
+
 const hero = defineCollection({
   loader: glob({ base: './src/content/settings', pattern: '*/hero.yml' }),
   schema: ({ image }) =>
@@ -39,7 +43,15 @@ const hero = defineCollection({
       video: z.string().optional().default(''),
       // Used as <video poster> and as the mobile / reduced-motion fallback.
       poster: image(),
-      images: z.array(image()).default([]),
+      posterPosition: position,
+      images: z
+        .array(
+          z.object({
+            image: image(),
+            position,
+          }),
+        )
+        .default([]),
       interval: z.number().positive().default(5),
     }),
 });
@@ -49,6 +61,7 @@ const bio = defineCollection({
   schema: ({ image }) =>
     z.object({
       portrait: image(),
+      portraitPosition: position,
     }),
 });
 
@@ -63,6 +76,7 @@ const videoEntry = ({ image }: { image: () => z.ZodType<ImageMetadata> }) =>
     featured: z.boolean().default(false),
     // Optional override; otherwise the YouTube thumbnail is used.
     thumbnail: image().optional(),
+    thumbnailPosition: position,
   });
 
 const playing = defineCollection({

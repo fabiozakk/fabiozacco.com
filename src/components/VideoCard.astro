@@ -9,15 +9,16 @@ interface Props {
   year?: number;
   featured?: boolean;
   thumbnail?: ImageMetadata;
+  thumbnailPosition?: string;
   index?: number;
   lang: Lang;
 }
 
-const { id, title, role, year, featured = false, thumbnail, index = 0, lang } = Astro.props;
+const { id, title, role, year, featured = false, thumbnail, thumbnailPosition, index = 0, lang } = Astro.props;
 const t = useTranslations(lang);
 
 const posterStyle = thumbnail
-  ? `background-image:url(${(await getImage({ src: thumbnail, width: 800 })).src})`
+  ? `background-image:url(${(await getImage({ src: thumbnail, width: 800 })).src})${thumbnailPosition ? `;background-position:${thumbnailPosition}` : ''}`
   : undefined;
 ---
 

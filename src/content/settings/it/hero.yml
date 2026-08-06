@@ -1,16 +1,27 @@
 # Leave `video` empty to show the image slideshow instead.
 # `poster` is also used as the mobile / reduced-motion fallback image.
+# `position` (and `posterPosition`) accept a raw CSS object-position value,
+# e.g. "50% 100%" or "center top" — leave empty for the default (centered).
 headline: "Fabio Zacco"
 subhead: "Musicista e Compositore"
 video: ""
 poster: ../../../assets/hero/01-biagio-live-1.jpg
+posterPosition: ""
 images:
-  - ../../../assets/hero/01-biagio-live-1.jpg
-  - ../../../assets/hero/02-vibrazioni-live-1.jpg
-  - ../../../assets/hero/03-mika-live-1.jpg
-  - ../../../assets/hero/04-biagio-live-2.jpg
-  - ../../../assets/hero/05-fabio-3.jpg
-  - ../../../assets/hero/06-biagio-live-3.jpg
-  - ../../../assets/hero/07-fabio-2.jpg
-  - ../../../assets/hero/08-biagio-live-4.jpg
+  - image: ../../../assets/hero/01-biagio-live-1.jpg
+    position: ""
+  - image: ../../../assets/hero/02-vibrazioni-live-1.jpg
+    position: ""
+  - image: ../../../assets/hero/03-mika-live-1.jpg
+    position: ""
+  - image: ../../../assets/hero/04-biagio-live-2.jpg
+    position: ""
+  - image: ../../../assets/hero/05-fabio-3.jpg
+    position: ""
+  - image: ../../../assets/hero/06-biagio-live-3.jpg
+    position: ""
+  - image: ../../../assets/hero/07-fabio-2.jpg
+    position: ""
+  - image: ../../../assets/hero/08-biagio-live-4.jpg
+    position: ""
 interval: 5

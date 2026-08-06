@@ -47,6 +47,7 @@ async function loadVideos(collection: 'playing' | 'scoring') {
         year: entry.data.year,
         featured: entry.data.featured,
         thumbnail: entry.data.thumbnail,
+        thumbnailPosition: entry.data.thumbnailPosition,
       };
     })
     .filter((v): v is NonNullable<typeof v> => v !== null);
@@ -70,12 +71,18 @@ const scoring = await loadVideos('scoring');
       subhead={hero.subhead}
       video={hero.video}
       poster={hero.poster}
+      posterPosition={hero.posterPosition}
       images={hero.images}
       interval={hero.interval}
       lang={lang}
     />
 
-    <Bio portrait={bioEntry.data.portrait} name={site.name} lang={lang}>
+    <Bio
+      portrait={bioEntry.data.portrait}
+      portraitPosition={bioEntry.data.portraitPosition}
+      name={site.name}
+      lang={lang}
+    >
       <BioContent />
     </Bio>
 

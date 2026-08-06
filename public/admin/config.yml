@@ -77,16 +77,27 @@ collections:
             media_folder: "../../../assets/hero"
             public_folder: "../../../assets/hero"
             hint: "Shown on mobile, with reduced motion, and while the video loads."
+          - label: "Poster position"
+            name: posterPosition
+            widget: string
+            required: false
+            hint: "How the poster is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
           - label: "Slideshow images"
             name: images
             widget: list
             hint: "Used only when the background video above is empty."
-            field:
-              label: "Image"
-              name: image
-              widget: image
-              media_folder: "../../../assets/hero"
-              public_folder: "../../../assets/hero"
+            summary: "{{fields.image}}"
+            fields:
+              - label: "Image"
+                name: image
+                widget: image
+                media_folder: "../../../assets/hero"
+                public_folder: "../../../assets/hero"
+              - label: "Position"
+                name: position
+                widget: string
+                required: false
+                hint: "How this image is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
           - { label: "Seconds per slide", name: interval, widget: number, value_type: int, default: 5 }
 
       - name: bio
@@ -99,6 +110,11 @@ collections:
             widget: image
             media_folder: "../../../assets/bio"
             public_folder: "../../../assets/bio"
+          - label: "Portrait position"
+            name: portraitPosition
+            widget: string
+            required: false
+            hint: "How the portrait is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
           - { label: "Bio text", name: body, widget: markdown }
 
   - name: playing
@@ -131,6 +147,11 @@ collections:
         media_folder: "../../../assets/videos"
         public_folder: "../../../assets/videos"
         hint: "Optional — by default the YouTube thumbnail is used."
+      - label: "Thumbnail position"
+        name: thumbnailPosition
+        widget: string
+        required: false
+        hint: "How the thumbnail is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
       - { label: "Note", name: body, widget: markdown, required: false }
 
   - name: scoring
@@ -163,4 +184,9 @@ collections:
         media_folder: "../../../assets/videos"
         public_folder: "../../../assets/videos"
         hint: "Optional — by default the YouTube thumbnail is used."
+      - label: "Thumbnail position"
+        name: thumbnailPosition
+        widget: string
+        required: false
+        hint: "How the thumbnail is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
       - { label: "Note", name: body, widget: markdown, required: false }
