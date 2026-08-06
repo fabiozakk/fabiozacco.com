@@ -49,6 +49,12 @@ const hero = defineCollection({
           z.object({
             image: image(),
             position,
+            // Optional tighter/differently-framed crop for narrow screens —
+            // falls back to `image` above when not set. Useful for wide
+            // group shots that lose their subject when cropped down to a
+            // narrow mobile viewport; most photos won't need one.
+            mobileImage: image().optional(),
+            mobilePosition: position,
           }),
         )
         .default([]),

@@ -2,7 +2,12 @@
 import { Image } from 'astro:assets';
 
 interface Props {
-  images: { image: ImageMetadata; position?: string }[];
+  images: {
+    image: ImageMetadata;
+    position?: string;
+    mobileImage?: ImageMetadata;
+    mobilePosition?: string;
+  }[];
   interval: number;
 }
 
@@ -11,17 +16,31 @@ const { images, interval } = Astro.props;
 
 <div class="hero__slideshow" data-hero-slideshow data-interval={interval}>
   {
-    images.map(({ image, position }, i) => (
-      <Image
-        src={image}
-        alt=""
-        class:list={['hero__slide', i === 0 && 'is-active']}
-        widths={[640, 1024, 1600, 2400]}
-        sizes="100vw"
-        loading={i === 0 ? 'eager' : 'lazy'}
-        fetchpriority={i === 0 ? 'high' : 'auto'}
-        style={position ? `--pos: ${position}` : undefined}
-      />
+    images.map(({ image, position, mobileImage, mobilePosition }, i) => (
+      <div class:list={['hero__slide', i === 0 && 'is-active']}>
+        <Image
+          src={image}
+          alt=""
+          class:list={['hero__slide-img', mobileImage && 'hero__slide-img--desktop-only']}
+          widths={[640, 1024, 1600, 2400]}
+          sizes="100vw"
+          loading={i === 0 ? 'eager' : 'lazy'}
+          fetchpriority={i === 0 ? 'high' : 'auto'}
+          style={position ? `--pos: ${position}` : undefined}
+        />
+        {mobileImage && (
+          <Image
+            src={mobileImage}
+            alt=""
+            class="hero__slide-img hero__slide-img--mobile-only"
+            widths={[480, 768, 1080]}
+            sizes="100vw"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+            style={mobilePosition ? `--pos: ${mobilePosition}` : undefined}
+          />
+        )}
+      </div>
     ))
   }
 </div>
@@ -37,8 +56,6 @@ const { images, interval } = Astro.props;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: var(--pos, center);
     opacity: 0;
     transform: scale(1);
     transition:
@@ -49,5 +66,29 @@ const { images, interval } = Astro.props;
   .hero__slide.is-active {
     opacity: 1;
     transform: scale(1.08);
+  }
+
+  .hero__slide-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--pos, center);
+  }
+
+  /* Only relevant when a slide has a mobileImage override — otherwise
+     there's just one (unclassed) image and this never applies. */
+  .hero__slide-img--mobile-only {
+    display: none;
+  }
+
+  @media (max-width: 40em) {
+    .hero__slide-img--desktop-only {
+      display: none;
+    }
+    .hero__slide-img--mobile-only {
+      display: block;
+    }
   }
 </style>

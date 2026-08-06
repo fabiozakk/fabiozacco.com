@@ -98,6 +98,18 @@ collections:
                 widget: string
                 required: false
                 hint: "How this image is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
+              - label: "Mobile image (optional)"
+                name: mobileImage
+                widget: image
+                required: false
+                media_folder: "../../../assets/hero"
+                public_folder: "../../../assets/hero"
+                hint: "Only needed for wide group shots that lose their subject when cropped narrow — e.g. a portrait-oriented crop of the same moment. Leave empty to just reuse the image above on phones too."
+              - label: "Mobile position"
+                name: mobilePosition
+                widget: string
+                required: false
+                hint: "Crop position for the mobile image above, same syntax as \"Position\". Leave empty for centered."
           - { label: "Seconds per slide", name: interval, widget: number, value_type: int, default: 5 }
 
       - name: bio

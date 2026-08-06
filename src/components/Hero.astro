@@ -9,7 +9,12 @@ interface Props {
   video: string;
   poster: ImageMetadata;
   posterPosition?: string;
-  images: { image: ImageMetadata; position?: string }[];
+  images: {
+    image: ImageMetadata;
+    position?: string;
+    mobileImage?: ImageMetadata;
+    mobilePosition?: string;
+  }[];
   interval: number;
   lang: Lang;
 }
