@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Fabio Zacco">
+  <!-- Solid ember tile rather than transparent art: the panel has both a light
+       and a dark theme, and this also doubles as the installed app icon. -->
+  <rect width="512" height="512" rx="116" fill="#C4562B"/>
+  <text
+    x="256"
+    y="342"
+    text-anchor="middle"
+    font-family="Instrument Serif, Georgia, 'Times New Roman', Times, serif"
+    font-size="248"
+    letter-spacing="-6"
+    fill="#F7F3EC"
+  >FZ</text>
+</svg>

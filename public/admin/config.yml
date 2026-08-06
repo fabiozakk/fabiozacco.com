@@ -14,6 +14,13 @@ backend:
   repo: fabiozakk/fabiozacco.com
   branch: main
 
+# Replaces the default Sveltia branding on the sign-in screen, in the header,
+# the browser tab, and the installed app icon.
+app_title: "Fabio Zacco"
+logo:
+  src: /admin/logo.svg
+  show_in_header: true
+
 # The site is bilingual (English + Italian), one full file per locale —
 # matches the `<content-type>/<locale>/<file>` folder layout on disk, e.g.
 # `src/content/playing/en/...` next to `src/content/playing/it/...`.
