@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import HeroSlideshow from './HeroSlideshow.astro';
+import { useTranslations, type Lang } from '../lib/i18n';
 
 interface Props {
   headline: string;
@@ -9,9 +10,11 @@ interface Props {
   poster: ImageMetadata;
   images: ImageMetadata[];
   interval: number;
+  lang: Lang;
 }
 
-const { headline, subhead, video, poster, images, interval } = Astro.props;
+const { headline, subhead, video, poster, images, interval, lang } = Astro.props;
+const t = useTranslations(lang);
 const words = headline.split(' ');
 ---
 
@@ -59,7 +62,7 @@ const words = headline.split(' ');
 
   <div class="hero__cue" aria-hidden="true">
     <span class="hero__cue-line"></span>
-    <span class="eyebrow">Scroll</span>
+    <span class="eyebrow">{t.hero.scroll}</span>
   </div>
 </section>
 

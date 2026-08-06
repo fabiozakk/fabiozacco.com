@@ -1,5 +1,6 @@
 ---
 import VideoCard from './VideoCard.astro';
+import { useTranslations, type Lang } from '../lib/i18n';
 
 interface Entry {
   id: string;
@@ -12,21 +13,22 @@ interface Entry {
 
 interface Props {
   id: string;
-  number: string;
-  title: string;
-  description: string;
+  section: 'playing' | 'scoring';
+  lang: Lang;
   entries: Entry[];
 }
 
-const { id, number, title, description, entries } = Astro.props;
+const { id, section, lang, entries } = Astro.props;
+const t = useTranslations(lang);
+const copy = t.sections[section];
 ---
 
 <section id={id} class="video-section">
   <div class="container">
     <div class="video-section__head">
-      <p class="reveal eyebrow" data-reveal>{number} — {title}</p>
-      <h2 class="reveal display video-section__title" data-reveal style="--reveal-i: 1">{title}</h2>
-      <p class="reveal video-section__desc" data-reveal style="--reveal-i: 2">{description}</p>
+      <p class="reveal eyebrow" data-reveal>{copy.eyebrow}</p>
+      <h2 class="reveal display video-section__title" data-reveal style="--reveal-i: 1">{copy.title}</h2>
+      <p class="reveal video-section__desc" data-reveal style="--reveal-i: 2">{copy.description}</p>
     </div>
 
     {
@@ -41,11 +43,12 @@ const { id, number, title, description, entries } = Astro.props;
               featured={entry.featured}
               thumbnail={entry.thumbnail}
               index={i}
+              lang={lang}
             />
           ))}
         </div>
       ) : (
-        <p class="video-section__empty">No videos yet — add one from the CMS panel.</p>
+        <p class="video-section__empty">{copy.empty}</p>
       )
     }
   </div>

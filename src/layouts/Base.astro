@@ -2,14 +2,17 @@
 import '@fontsource-variable/inter';
 import '@fontsource/instrument-serif';
 import '../styles/global.css';
-import { getCollection } from 'astro:content';
+import { locales, getLocalizedEntry, useTranslations, type Lang } from '../lib/i18n';
 
 interface Props {
+  lang: Lang;
   title?: string;
   description?: string;
 }
 
-const [siteEntry] = await getCollection('site');
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const siteEntry = await getLocalizedEntry('site', lang);
 const site = siteEntry.data;
 
 const title = Astro.props.title ?? `${site.name} — ${site.tagline}`;
@@ -29,13 +32,16 @@ const jsonLd = {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
+
+    {locales.map((l) => <link rel="alternate" hreflang={l} href={new URL(`/${l}/`, Astro.site)} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL('/en/', Astro.site)} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -47,6 +53,7 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content={lang === 'it' ? 'it_IT' : 'en_US'} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -57,7 +64,7 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
-    <a href="#main" class="skip-link">Skip to content</a>
+    <a href="#main" class="skip-link">{t.skipLink}</a>
     <slot />
   </body>
 </html>

@@ -1,27 +1,35 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import 'lite-youtube-embed/src/lite-yt-embed.css';
 
 import Base from '../layouts/Base.astro';
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import Bio from '../components/Bio.astro';
-import VideoSection from '../components/VideoSection.astro';
-import Marquee from '../components/Marquee.astro';
-import Contact from '../components/Contact.astro';
-import Grain from '../components/Grain.astro';
+import Nav from './Nav.astro';
+import Hero from './Hero.astro';
+import Bio from './Bio.astro';
+import VideoSection from './VideoSection.astro';
+import Marquee from './Marquee.astro';
+import Contact from './Contact.astro';
+import Grain from './Grain.astro';
 import { extractYouTubeId } from '../lib/youtube';
+import { getLocalizedEntry, getLocalizedCollection, useTranslations, type Lang } from '../lib/i18n';
 
-const [siteEntry] = await getCollection('site');
-const [heroEntry] = await getCollection('hero');
-const [bioEntry] = await getCollection('bio');
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const siteEntry = await getLocalizedEntry('site', lang);
+const heroEntry = await getLocalizedEntry('hero', lang);
+const bioEntry = await getLocalizedEntry('bio', lang);
 
 const site = siteEntry.data;
 const hero = heroEntry.data;
 const { Content: BioContent } = await render(bioEntry);
 
 async function loadVideos(collection: 'playing' | 'scoring') {
-  const entries = await getCollection(collection);
+  const entries = await getLocalizedCollection(collection, lang);
   return entries
     .sort((a, b) => a.data.order - b.data.order)
     .map((entry) => {
@@ -46,17 +54,15 @@ async function loadVideos(collection: 'playing' | 'scoring') {
 
 const playing = await loadVideos('playing');
 const scoring = await loadVideos('scoring');
-
-const marqueeItems = ['Composition', 'Live Performance', 'Scoring', 'Arrangement', 'Production'];
 ---
 
-<Base>
+<Base lang={lang}>
   <Grain />
   <div class="play-cursor" data-play-cursor aria-hidden="true">
     <span>Play</span>
   </div>
 
-  <Nav name={site.name} />
+  <Nav name={site.name} lang={lang} />
 
   <main id="main">
     <Hero
@@ -66,33 +72,22 @@ const marqueeItems = ['Composition', 'Live Performance', 'Scoring', 'Arrangement
       poster={hero.poster}
       images={hero.images}
       interval={hero.interval}
+      lang={lang}
     />
 
-    <Bio portrait={bioEntry.data.portrait} name={site.name}>
+    <Bio portrait={bioEntry.data.portrait} name={site.name} lang={lang}>
       <BioContent />
     </Bio>
 
-    <Marquee items={marqueeItems} />
+    <Marquee items={t.marquee} />
 
-    <VideoSection
-      id="playing"
-      number="02"
-      title="Playing"
-      description="Live performances, sessions, and stage work."
-      entries={playing}
-    />
+    <VideoSection id="playing" section="playing" lang={lang} entries={playing} />
 
-    <VideoSection
-      id="scoring"
-      number="03"
-      title="Scoring"
-      description="Original music for film, documentary, and picture."
-      entries={scoring}
-    />
+    <VideoSection id="scoring" section="scoring" lang={lang} entries={scoring} />
 
-    <Marquee items={marqueeItems} />
+    <Marquee items={t.marquee} />
 
-    <Contact email={site.email} location={site.location} social={site.social} />
+    <Contact email={site.email} location={site.location} social={site.social} lang={lang} />
   </main>
 
   <script>

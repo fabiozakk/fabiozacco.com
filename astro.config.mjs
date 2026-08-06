@@ -10,4 +10,14 @@ export default defineConfig({
     // Allow remote YouTube thumbnails to be used with astro:assets if ever needed.
     domains: ['i.ytimg.com'],
   },
+  i18n: {
+    locales: ['en', 'it'],
+    defaultLocale: 'en',
+    routing: {
+      prefixDefaultLocale: true,
+    },
+  },
+  redirects: {
+    '/': '/en/',
+  },
 });

@@ -1,15 +1,21 @@
 ---
+import { locales, useTranslations, type Lang } from '../lib/i18n';
+
 interface Props {
   name: string;
+  lang: Lang;
 }
-const { name } = Astro.props;
+const { name, lang } = Astro.props;
+const t = useTranslations(lang);
 
 const links = [
-  { href: '#bio', label: 'About' },
-  { href: '#playing', label: 'Playing' },
-  { href: '#scoring', label: 'Scoring' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#bio', label: t.nav.about },
+  { href: '#playing', label: t.nav.playing },
+  { href: '#scoring', label: t.nav.scoring },
+  { href: '#contact', label: t.nav.contact },
 ];
+
+const otherLocales = locales.filter((l) => l !== lang);
 ---
 
 <header class="nav">
@@ -21,6 +27,15 @@ const links = [
           links.map((link) => (
             <li>
               <a href={link.href}>{link.label}</a>
+            </li>
+          ))
+        }
+        {
+          otherLocales.map((otherLang) => (
+            <li>
+              <a href={`/${otherLang}/`} class="nav__lang" aria-label={t.langSwitchLabel(otherLang)}>
+                {otherLang}
+              </a>
             </li>
           ))
         }
@@ -95,6 +110,20 @@ const links = [
   .nav__links a:hover::after,
   .nav__links a:focus-visible::after {
     transform: scaleX(1);
+  }
+
+  .nav__lang {
+    padding: 0.2em 0.6em;
+    border: 1px solid var(--line);
+  }
+
+  .nav__lang::after {
+    display: none;
+  }
+
+  .nav__lang:hover,
+  .nav__lang:focus-visible {
+    border-color: var(--accent);
   }
 
   @media (max-width: 40em) {

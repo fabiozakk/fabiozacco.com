@@ -4,9 +4,14 @@ import { glob } from 'astro/loaders';
 // Each "settings" file is edited as its own form in the CMS panel, so each
 // gets its own collection (one entry, one shape) rather than being crammed
 // into a single generic "settings" bucket with a loose schema.
+//
+// Every collection is bilingual: each pattern matches one file per locale
+// folder (e.g. `en/site.yml`, `it/site.yml`), and the entry `id` carries the
+// locale as its first path segment — see `src/lib/i18n.ts` for how callers
+// pick the right one.
 
 const site = defineCollection({
-  loader: glob({ base: './src/content/settings', pattern: 'site.yml' }),
+  loader: glob({ base: './src/content/settings', pattern: '*/site.yml' }),
   schema: z.object({
     name: z.string(),
     tagline: z.string(),
@@ -25,7 +30,7 @@ const site = defineCollection({
 });
 
 const hero = defineCollection({
-  loader: glob({ base: './src/content/settings', pattern: 'hero.yml' }),
+  loader: glob({ base: './src/content/settings', pattern: '*/hero.yml' }),
   schema: ({ image }) =>
     z.object({
       headline: z.string(),
@@ -40,7 +45,7 @@ const hero = defineCollection({
 });
 
 const bio = defineCollection({
-  loader: glob({ base: './src/content/settings', pattern: 'bio.md' }),
+  loader: glob({ base: './src/content/settings', pattern: '*/bio.md' }),
   schema: ({ image }) =>
     z.object({
       portrait: image(),
@@ -61,12 +66,12 @@ const videoEntry = ({ image }: { image: () => z.ZodType<ImageMetadata> }) =>
   });
 
 const playing = defineCollection({
-  loader: glob({ base: './src/content/playing', pattern: '*.md' }),
+  loader: glob({ base: './src/content/playing', pattern: '*/*.md' }),
   schema: videoEntry,
 });
 
 const scoring = defineCollection({
-  loader: glob({ base: './src/content/scoring', pattern: '*.md' }),
+  loader: glob({ base: './src/content/scoring', pattern: '*/*.md' }),
   schema: videoEntry,
 });
 

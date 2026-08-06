@@ -1,12 +1,15 @@
 ---
 import { Image } from 'astro:assets';
+import { useTranslations, type Lang } from '../lib/i18n';
 
 interface Props {
   portrait: ImageMetadata;
   name: string;
+  lang: Lang;
 }
 
-const { portrait, name } = Astro.props;
+const { portrait, name, lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section id="bio" class="bio">
@@ -22,7 +25,7 @@ const { portrait, name } = Astro.props;
     </div>
 
     <div class="bio__copy">
-      <p class="reveal eyebrow bio__label" data-reveal>01 — About</p>
+      <p class="reveal eyebrow bio__label" data-reveal>{t.sections.bio.eyebrow}</p>
       <div class="reveal bio__text" data-reveal style="--reveal-i: 1">
         <slot />
       </div>

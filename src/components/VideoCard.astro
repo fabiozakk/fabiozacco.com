@@ -1,5 +1,6 @@
 ---
 import { getImage } from 'astro:assets';
+import { useTranslations, type Lang } from '../lib/i18n';
 
 interface Props {
   id: string;
@@ -9,9 +10,11 @@ interface Props {
   featured?: boolean;
   thumbnail?: ImageMetadata;
   index?: number;
+  lang: Lang;
 }
 
-const { id, title, role, year, featured = false, thumbnail, index = 0 } = Astro.props;
+const { id, title, role, year, featured = false, thumbnail, index = 0, lang } = Astro.props;
+const t = useTranslations(lang);
 
 const posterStyle = thumbnail
   ? `background-image:url(${(await getImage({ src: thumbnail, width: 800 })).src})`
@@ -30,7 +33,7 @@ const posterStyle = thumbnail
       params="rel=0&modestbranding=1&color=white&iv_load_policy=3&cc_load_policy=0"
       style={posterStyle}
     >
-      <span class="visually-hidden">Play: {title} on YouTube</span>
+      <span class="visually-hidden">{t.videoPlayLabel(title)}</span>
     </lite-youtube>
   </div>
   <div class="video-card__meta">

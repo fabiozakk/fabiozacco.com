@@ -1,5 +1,5 @@
 ---
-portrait: ../../assets/bio/portrait.jpg
+portrait: ../../../assets/bio/portrait.jpg
 ---
 
 Fabio Zacco, musician and composer, was born in Ragusa, Sicily, in 1986. A graduate in

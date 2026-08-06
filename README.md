@@ -2,24 +2,31 @@
 
 One-page site built with [Astro](https://astro.build), styled as a dark, cinematic
 showcase, with content editable either as plain files or through a visual CMS panel
-at `/admin`.
+at `/admin`. Bilingual: English at `/en/`, Italian at `/it/` (`/` redirects to `/en/`).
 
 ## Project structure
 
 ```
 src/
 ├─ content.config.ts        # Content collection schemas (validated at build time)
-├─ content/
+├─ content/                 # Every collection has one file/folder per locale:
+│  │                        # <collection>/<locale>/<file>, e.g. playing/en/…
 │  ├─ settings/
-│  │  ├─ site.yml           # Name, tagline, email, social links, SEO description
-│  │  ├─ hero.yml           # Headline, subhead, video OR slideshow images
-│  │  └─ bio.md             # Short bio text + portrait
-│  ├─ playing/*.md          # One file per "Playing" video
-│  └─ scoring/*.md          # One file per "Scoring" video
-├─ assets/                  # Images referenced by the content files above
-├─ components/              # Page sections (Hero, Bio, VideoCard, Contact, …)
-├─ layouts/Base.astro       # <head>, SEO, fonts
-├─ pages/index.astro        # Assembles the one page
+│  │  ├─ en/ it/            #   site.yml, hero.yml, bio.md — one set per language
+│  ├─ playing/
+│  │  ├─ en/ it/*.md        #   One file per "Playing" video, per language
+│  └─ scoring/
+│     ├─ en/ it/*.md        #   One file per "Scoring" video, per language
+├─ assets/                  # Images referenced by the content files above (shared
+│                            # across locales — reference the same path from both)
+├─ components/
+│  ├─ Home.astro            # Assembles the one page; takes a `lang` prop
+│  └─ …                     # Page sections (Hero, Bio, VideoCard, Contact, …)
+├─ layouts/Base.astro       # <head>, SEO, fonts, hreflang alternates
+├─ lib/i18n.ts              # Locale list + UI copy dictionary (nav, labels, footer…)
+├─ pages/
+│  ├─ en/index.astro        # <Home lang="en" />
+│  └─ it/index.astro        # <Home lang="it" />
 └─ scripts/motion.ts        # Scroll reveal, parallax, custom cursor, marquee, Lenis
 
 public/
@@ -41,21 +48,27 @@ Opens at `http://localhost:4321`. `npm run build` outputs the static site to `di
 
 ### Option A — edit files directly
 
-Every piece of content is a plain Markdown or YAML file under `src/content/`:
+Every piece of content is a plain Markdown or YAML file under `src/content/`, split
+into `en/` and `it/` subfolders — **every change needs to be made in both languages**
+to keep the site in sync:
 
-- **Site info & social links** → `src/content/settings/site.yml`
-- **Hero** → `src/content/settings/hero.yml`. Leave `video` empty to show the image
-  slideshow (`images:` list); fill it in with a direct `.mp4` URL to use a video
-  background instead (not a YouTube link).
-- **Bio** → `src/content/settings/bio.md` (frontmatter has the portrait image, the
-  body text is the bio itself).
-- **Playing / Scoring videos** → add a new `.md` file in `src/content/playing/` or
-  `src/content/scoring/`. Copy an existing one as a template. The `youtube` field
-  accepts a full YouTube URL, a `youtu.be` link, or just the 11-character video ID.
-  `order` controls sort position, `featured: true` makes a card span the full width.
+- **Site info & social links** → `src/content/settings/{en,it}/site.yml`
+- **Hero** → `src/content/settings/{en,it}/hero.yml`. Leave `video` empty to show the
+  image slideshow (`images:` list); fill it in with a direct `.mp4` URL to use a video
+  background instead (not a YouTube link). Point both locales at the same image/video
+  paths unless you specifically want different media per language.
+- **Bio** → `src/content/settings/{en,it}/bio.md` (frontmatter has the portrait image,
+  the body text is the bio itself).
+- **Playing / Scoring videos** → add a matching `.md` file in both
+  `src/content/playing/en/` + `.../it/` (or `scoring/`), with the **same filename** in
+  each so the CMS pairs them as translations of one entry. Copy an existing one as a
+  template. The `youtube` field accepts a full YouTube URL, a `youtu.be` link, or just
+  the 11-character video ID. `order` controls sort position (keep it identical across
+  languages), `featured: true` makes a card span the full width.
 
 Images live in `src/assets/` (not `public/`) so Astro can optimize them
-automatically (AVIF/WebP, responsive sizes, lazy loading).
+automatically (AVIF/WebP, responsive sizes, lazy loading). One copy is enough — both
+locales can reference the same file.
 
 ### Option B — the CMS panel
 
@@ -64,13 +77,13 @@ visual editor — no code required. It's [Sveltia CMS](https://sveltiacms.app), 
 open-source panel that edits the same files described above and commits the changes
 to GitHub. Publishing a change triggers a new deploy automatically.
 
-**Before this works you need to:**
+`public/admin/config.yml` already points at this project's repo (`backend.repo`) and
+declares both locales under `i18n:` — the editor shows a language switcher on every
+bilingual entry. The one thing still needed for it to work live:
 
-1. Push this project to a GitHub repository.
-2. Edit `public/admin/config.yml` and replace `OWNER/REPO` in the `backend.repo` line
-   with your actual `github-username/repo-name`.
-3. Deploy the site on **Netlify** (see below) and link it to that same repo — Netlify's
-   built-in OAuth then lets the CMS log in with "Sign in with GitHub", no extra setup.
+1. Deploy the site on **Netlify** (see below) and link it to that same GitHub repo —
+   Netlify's built-in OAuth then lets the CMS log in with "Sign in with GitHub", no
+   extra setup.
 
 **Editing without deploying anywhere first:** run `npm run dev`, open
 `http://localhost:4321/admin` in **Chrome or Edge**, and choose **"Work with Local
@@ -98,15 +111,9 @@ access.
 5. Point your domain at Netlify (Netlify's docs cover custom domains + HTTPS, both
    free).
 
-## Placeholder content
-
-The `playing` and `scoring` entries and the hero/bio images are placeholders (marked
-`PLACEHOLDER` in the title, using open-licensed sample videos and generated abstract
-art) so the page has something real to render. Replace them with real photos, bio
-copy, and video links — either by editing the files directly or through `/admin`.
-
 ## Stack
 
-Astro 7 · content collections (Markdown/YAML) · Sveltia CMS · Motion + Lenis for
-animation/smooth scroll · `lite-youtube-embed` for lightweight YouTube embeds ·
-Fontsource (self-hosted Inter Variable + Instrument Serif) · Netlify hosting.
+Astro 7 · content collections (Markdown/YAML) · built-in i18n routing (English +
+Italian) · Sveltia CMS · Motion + Lenis for animation/smooth scroll ·
+`lite-youtube-embed` for lightweight YouTube embeds · Fontsource (self-hosted Inter
+Variable + Instrument Serif) · Netlify hosting.

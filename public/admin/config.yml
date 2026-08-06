@@ -14,6 +14,14 @@ backend:
   repo: fabiozakk/fabiozacco.com
   branch: main
 
+# The site is bilingual (English + Italian), one full file per locale —
+# matches the `<content-type>/<locale>/<file>` folder layout on disk, e.g.
+# `src/content/playing/en/...` next to `src/content/playing/it/...`.
+i18n:
+  structure: multiple_folders
+  locales: [en, it]
+  default_locale: en
+
 # Where Sveltia looks for an existing entry's images when no per-field
 # media_folder is set below. Every field that needs one overrides it with a
 # path relative to its own content file, matching what Astro's image()
@@ -27,9 +35,13 @@ collections:
     editor:
       preview: false
     files:
+      # `structure: multiple_folders` above only applies to the folder
+      # collections below — a "files" entry like this one needs its own
+      # `{{locale}}` placeholder to get a separate file per language.
       - name: site
         label: "Site"
-        file: src/content/settings/site.yml
+        file: src/content/settings/{{locale}}/site.yml
+        i18n: true
         fields:
           - { label: "Name", name: name, widget: string }
           - { label: "Tagline", name: tagline, widget: string }
@@ -49,7 +61,8 @@ collections:
 
       - name: hero
         label: "Hero"
-        file: src/content/settings/hero.yml
+        file: src/content/settings/{{locale}}/hero.yml
+        i18n: true
         fields:
           - { label: "Headline", name: headline, widget: string }
           - { label: "Subhead", name: subhead, widget: string }
@@ -61,8 +74,8 @@ collections:
           - label: "Poster image"
             name: poster
             widget: image
-            media_folder: "../../assets/hero"
-            public_folder: "../../assets/hero"
+            media_folder: "../../../assets/hero"
+            public_folder: "../../../assets/hero"
             hint: "Shown on mobile, with reduced motion, and while the video loads."
           - label: "Slideshow images"
             name: images
@@ -72,25 +85,27 @@ collections:
               label: "Image"
               name: image
               widget: image
-              media_folder: "../../assets/hero"
-              public_folder: "../../assets/hero"
+              media_folder: "../../../assets/hero"
+              public_folder: "../../../assets/hero"
           - { label: "Seconds per slide", name: interval, widget: number, value_type: int, default: 5 }
 
       - name: bio
         label: "Bio"
-        file: src/content/settings/bio.md
+        file: src/content/settings/{{locale}}/bio.md
+        i18n: true
         fields:
           - label: "Portrait"
             name: portrait
             widget: image
-            media_folder: "../../assets/bio"
-            public_folder: "../../assets/bio"
+            media_folder: "../../../assets/bio"
+            public_folder: "../../../assets/bio"
           - { label: "Bio text", name: body, widget: markdown }
 
   - name: playing
     label: "Playing"
     label_singular: "Playing video"
     folder: src/content/playing
+    i18n: true
     create: true
     slug: "{{fields.order}}-{{slug}}"
     summary: "{{title}} ({{year}})"
@@ -107,14 +122,14 @@ collections:
         widget: number
         value_type: int
         default: 0
-        hint: "Lower numbers appear first."
+        hint: "Lower numbers appear first. Keep this the same across languages so the two versions of a video stay paired."
       - { label: "Featured (full-width card)", name: featured, widget: boolean, default: false }
       - label: "Thumbnail override"
         name: thumbnail
         widget: image
         required: false
-        media_folder: "../../assets/videos"
-        public_folder: "../../assets/videos"
+        media_folder: "../../../assets/videos"
+        public_folder: "../../../assets/videos"
         hint: "Optional — by default the YouTube thumbnail is used."
       - { label: "Note", name: body, widget: markdown, required: false }
 
@@ -122,6 +137,7 @@ collections:
     label: "Scoring"
     label_singular: "Scoring video"
     folder: src/content/scoring
+    i18n: true
     create: true
     slug: "{{fields.order}}-{{slug}}"
     summary: "{{title}} ({{year}})"
@@ -138,13 +154,13 @@ collections:
         widget: number
         value_type: int
         default: 0
-        hint: "Lower numbers appear first."
+        hint: "Lower numbers appear first. Keep this the same across languages so the two versions of a video stay paired."
       - { label: "Featured (full-width card)", name: featured, widget: boolean, default: false }
       - label: "Thumbnail override"
         name: thumbnail
         widget: image
         required: false
-        media_folder: "../../assets/videos"
-        public_folder: "../../assets/videos"
+        media_folder: "../../../assets/videos"
+        public_folder: "../../../assets/videos"
         hint: "Optional — by default the YouTube thumbnail is used."
       - { label: "Note", name: body, widget: markdown, required: false }
