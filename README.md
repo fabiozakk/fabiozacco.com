@@ -117,3 +117,5 @@ Astro 7 · content collections (Markdown/YAML) · built-in i18n routing (English
 Italian) · Sveltia CMS · Motion + Lenis for animation/smooth scroll ·
 `lite-youtube-embed` for lightweight YouTube embeds · Fontsource (self-hosted Inter
 Variable + Instrument Serif) · Netlify hosting.
+
+
