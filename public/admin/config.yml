@@ -32,6 +32,10 @@ public_folder: "/src/assets"
 collections:
   - name: settings
     label: "Settings"
+    # Required here, at the collection level, in addition to `i18n: true` on
+    # each file below — Sveltia checks the collection flag first and won't
+    # even look at a file's own i18n setting if this is missing.
+    i18n: true
     editor:
       preview: false
     files:
