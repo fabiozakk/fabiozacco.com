@@ -11,7 +11,7 @@ images:
     position: ''
     mobilePosition: ''
   - image: ../../../assets/hero/03-mika-live-1.jpg
-    position: left bottom
+    position: left 80%
     mobilePosition: ''
   - image: ../../../assets/hero/04-biagio-live-2.jpg
     position: center top
