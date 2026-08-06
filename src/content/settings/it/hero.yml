@@ -6,18 +6,26 @@ posterPosition: ''
 images:
   - image: ../../../assets/hero/01-biagio-live-1.jpg
     position: ''
+    mobilePosition: ''
   - image: ../../../assets/hero/02-vibrazioni-live-1.jpg
     position: ''
+    mobilePosition: ''
   - image: ../../../assets/hero/03-mika-live-1.jpg
-    position: ''
+    position: left 80%
+    mobilePosition: ''
   - image: ../../../assets/hero/04-biagio-live-2.jpg
-    position: ''
+    position: center top
+    mobilePosition: ''
   - image: ../../../assets/hero/05-fabio-3.jpg
     position: ''
+    mobilePosition: ''
   - image: ../../../assets/hero/06-biagio-live-3.jpg
     position: ''
+    mobilePosition: ''
   - image: ../../../assets/hero/07-fabio-2.jpg
-    position: ''
+    position: center 30%
+    mobilePosition: ''
   - image: ../../../assets/hero/08-biagio-live-4.jpg
     position: ''
+    mobilePosition: ''
 interval: 5

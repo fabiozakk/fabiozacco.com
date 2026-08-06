@@ -72,9 +72,12 @@ collections:
             widget: list
             i18n: duplicate
             summary: "{{fields.label}}"
+            # Nested fields need their own `i18n` as well: auto-duplication is
+            # decided per changed field, and a change inside a list resolves to
+            # the child field's config, not the list's.
             fields:
-              - { label: "Label", name: label, widget: string }
-              - { label: "URL", name: url, widget: string }
+              - { label: "Label", name: label, widget: string, i18n: duplicate }
+              - { label: "URL", name: url, widget: string, i18n: duplicate }
 
       - name: hero
         label: "Hero"
@@ -108,21 +111,27 @@ collections:
             i18n: duplicate
             hint: "Used only when the background video above is empty."
             summary: "{{fields.image}}"
+            # Nested fields need their own `i18n` as well: auto-duplication is
+            # decided per changed field, and a change inside a list resolves to
+            # the child field's config, not the list's.
             fields:
               - label: "Image"
                 name: image
                 widget: image
+                i18n: duplicate
                 media_folder: "../../../assets/hero"
                 public_folder: "../../../assets/hero"
               - label: "Position"
                 name: position
                 widget: string
                 required: false
+                i18n: duplicate
                 hint: "How this image is cropped, as a CSS position (e.g. \"50% 100%\" or \"center top\"). Leave empty for centered."
               - label: "Mobile image (optional)"
                 name: mobileImage
                 widget: image
                 required: false
+                i18n: duplicate
                 media_folder: "../../../assets/hero"
                 public_folder: "../../../assets/hero"
                 hint: "Only needed for wide group shots that lose their subject when cropped narrow — e.g. a portrait-oriented crop of the same moment. Leave empty to just reuse the image above on phones too."
@@ -130,6 +139,7 @@ collections:
                 name: mobilePosition
                 widget: string
                 required: false
+                i18n: duplicate
                 hint: "Crop position for the mobile image above, same syntax as \"Position\". Leave empty for centered."
           - { label: "Seconds per slide", name: interval, widget: number, value_type: int, default: 5, i18n: duplicate }
 
