@@ -110,3 +110,6 @@ copy, and video links — either by editing the files directly or through `/admi
 Astro 7 · content collections (Markdown/YAML) · Sveltia CMS · Motion + Lenis for
 animation/smooth scroll · `lite-youtube-embed` for lightweight YouTube embeds ·
 Fontsource (self-hosted Inter Variable + Instrument Serif) · Netlify hosting.
+
+
+a
