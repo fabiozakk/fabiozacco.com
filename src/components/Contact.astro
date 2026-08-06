@@ -12,13 +12,26 @@ interface Props {
 
 const { email, location, social } = Astro.props;
 const year = new Date().getFullYear();
+
+// Kept out of the server-rendered HTML as a literal address so plain-HTML
+// scrapers can't harvest it by regex; a small script below reassembles it
+// client-side. The visible fallback (readable, not a working link) covers
+// visitors with JavaScript disabled.
+const emailCodes = JSON.stringify([...email].map((c) => c.charCodeAt(0)));
+const emailMunged = email.replace('@', ' [at] ').replace(/\.(?=[^.]*$)/, ' [dot] ');
 ---
 
 <section id="contact" class="contact">
   <div class="container">
     <p class="reveal eyebrow" data-reveal>04 — Contact</p>
-    <a href={`mailto:${email}`} class="reveal display contact__email" data-reveal style="--reveal-i: 1">
-      {email}
+    <a
+      href="#"
+      class="reveal display contact__email"
+      data-reveal
+      data-email={emailCodes}
+      style="--reveal-i: 1"
+    >
+      {emailMunged}
     </a>
 
     <div class="contact__row">
@@ -46,6 +59,17 @@ const year = new Date().getFullYear();
     <p>&copy; {year} — All rights reserved.</p>
   </footer>
 </section>
+
+<script>
+  // Reassembles the email from character codes so it never appears as
+  // literal text in the page source. See the comment in the frontmatter.
+  document.querySelectorAll<HTMLAnchorElement>('[data-email]').forEach((link) => {
+    const codes = JSON.parse(link.dataset.email ?? '[]') as number[];
+    const address = String.fromCharCode(...codes);
+    link.textContent = address;
+    link.href = `mailto:${address}`;
+  });
+</script>
 
 <style>
   .contact {

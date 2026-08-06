@@ -23,7 +23,6 @@ const jsonLd = {
   name: site.name,
   jobTitle: site.tagline,
   description: site.seoDescription,
-  email: `mailto:${site.email}`,
   url: canonicalURL.toString(),
   sameAs: site.social.map((s) => s.url),
 };
