@@ -50,7 +50,12 @@ const t = useTranslations(lang);
 
   .bio__portrait {
     width: 100%;
+    /* Without this the image's own height attribute wins over aspect-ratio,
+       and a tall source stretches the frame to its full pixel height. */
+    height: auto;
     aspect-ratio: 4 / 5;
+    /* Never taller than the viewport it sticks to. */
+    max-height: calc(100svh - 8rem);
     object-fit: cover;
     object-position: var(--pos, center);
     filter: grayscale(0.35) contrast(1.05);
