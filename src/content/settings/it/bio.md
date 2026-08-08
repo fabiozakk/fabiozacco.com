@@ -1,5 +1,5 @@
 ---
-portrait: ../../../../assets/bio/fabio-bio.jpg
+portrait: /src/assets/fabio-bio.webp
 portraitPosition: ''
 ---
 
