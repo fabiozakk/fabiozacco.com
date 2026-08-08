@@ -19,7 +19,7 @@ images:
   - image: ../../../assets/hero/06-biagio-live-3.jpg
     position: ''
     mobilePosition: ''
-  - image: ../../../../assets/hero/fabio_bw.jpg
+  - image: /src/assets/fabio_bw.webp
     position: 40% 30%
     mobilePosition: ''
   - image: ../../../assets/hero/08-biagio-live-4.jpg
