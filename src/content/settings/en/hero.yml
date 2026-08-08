@@ -5,22 +5,22 @@ poster: ../../../assets/hero/01-biagio-live-1.jpg
 posterPosition: ''
 images:
   - image: ../../../assets/hero/01-biagio-live-1.jpg
-    position: ''
+    position: 85% center
     mobilePosition: ''
   - image: ../../../assets/hero/02-vibrazioni-live-1.jpg
-    position: ''
+    position: 65% center
     mobilePosition: ''
   - image: ../../../assets/hero/04-biagio-live-2.jpg
-    position: center top
+    position: 35% top
     mobilePosition: ''
   - image: ../../../assets/hero/05-fabio-3.jpg
-    position: ''
+    position: 40% center
     mobilePosition: ''
   - image: ../../../assets/hero/06-biagio-live-3.jpg
     position: ''
     mobilePosition: ''
-  - image: ../../../assets/hero/07-fabio-2.jpg
-    position: center 30%
+  - image: ../../../../assets/hero/fabio_bw.jpg
+    position: 40% 30%
     mobilePosition: ''
   - image: ../../../assets/hero/08-biagio-live-4.jpg
     position: ''
