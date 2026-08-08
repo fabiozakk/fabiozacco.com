@@ -29,11 +29,14 @@ i18n:
   locales: [en, it]
   default_locale: en
 
-# Where Sveltia looks for an existing entry's images when no per-field
-# media_folder is set below. Every field that needs one overrides it with a
-# path relative to its own content file, matching what Astro's image()
-# schema helper expects.
-media_folder: "src/assets"
+# Media paths are absolute (leading slash) on purpose. Sveltia treats a
+# relative media_folder as "entry-relative" and then resolves the save
+# location and the stored reference from different bases — with the locale
+# subfolder in play they disagreed, so uploads landed in one folder while the
+# entry pointed at another and the build failed. An absolute path is resolved
+# from the repo root, identically in both cases. Astro's image() helper
+# accepts `/src/assets/...` just as happily as a relative path.
+media_folder: "/src/assets"
 public_folder: "/src/assets"
 
 collections:
@@ -96,8 +99,8 @@ collections:
             name: poster
             widget: image
             i18n: duplicate
-            media_folder: "../../../assets/hero"
-            public_folder: "../../../assets/hero"
+            media_folder: "/src/assets/hero"
+            public_folder: "/src/assets/hero"
             hint: "Shown on mobile, with reduced motion, and while the video loads."
           - label: "Poster position"
             name: posterPosition
@@ -119,8 +122,8 @@ collections:
                 name: image
                 widget: image
                 i18n: duplicate
-                media_folder: "../../../assets/hero"
-                public_folder: "../../../assets/hero"
+                media_folder: "/src/assets/hero"
+                public_folder: "/src/assets/hero"
               - label: "Position"
                 name: position
                 widget: string
@@ -132,8 +135,8 @@ collections:
                 widget: image
                 required: false
                 i18n: duplicate
-                media_folder: "../../../assets/hero"
-                public_folder: "../../../assets/hero"
+                media_folder: "/src/assets/hero"
+                public_folder: "/src/assets/hero"
                 hint: "Only needed for wide group shots that lose their subject when cropped narrow — e.g. a portrait-oriented crop of the same moment. Leave empty to just reuse the image above on phones too."
               - label: "Mobile position"
                 name: mobilePosition
@@ -152,8 +155,8 @@ collections:
             name: portrait
             widget: image
             i18n: duplicate
-            media_folder: "../../../assets/bio"
-            public_folder: "../../../assets/bio"
+            media_folder: "/src/assets/bio"
+            public_folder: "/src/assets/bio"
           - label: "Portrait position"
             name: portraitPosition
             widget: string
@@ -192,8 +195,8 @@ collections:
         widget: image
         required: false
         i18n: duplicate
-        media_folder: "../../../assets/videos"
-        public_folder: "../../../assets/videos"
+        media_folder: "/src/assets/videos"
+        public_folder: "/src/assets/videos"
         hint: "Optional — by default the YouTube thumbnail is used."
       - label: "Thumbnail position"
         name: thumbnailPosition
@@ -233,8 +236,8 @@ collections:
         widget: image
         required: false
         i18n: duplicate
-        media_folder: "../../../assets/videos"
-        public_folder: "../../../assets/videos"
+        media_folder: "/src/assets/videos"
+        public_folder: "/src/assets/videos"
         hint: "Optional — by default the YouTube thumbnail is used."
       - label: "Thumbnail position"
         name: thumbnailPosition
