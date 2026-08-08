@@ -12,6 +12,17 @@ interface Props {
 }
 
 const { images, interval } = Astro.props;
+
+// The slide fills the viewport and the Ken Burns pass scales it to 1.08, so
+// the painted width runs past 100vw. Candidates go up to 3x-display territory
+// and are capped per image so Astro never upscales a smaller source.
+const SIZES = '108vw';
+const LADDER = [640, 1024, 1600, 2048, 2560, 3200, 3840];
+const widthsFor = (img: ImageMetadata) => {
+  const usable = LADDER.filter((w) => w <= img.width);
+  // Nothing in the ladder fits a small source — offer its native width alone.
+  return usable.length ? usable : [img.width];
+};
 ---
 
 <div class="hero__slideshow" data-hero-slideshow data-interval={interval}>
@@ -22,8 +33,8 @@ const { images, interval } = Astro.props;
           src={image}
           alt=""
           class:list={['hero__slide-img', mobileImage && 'hero__slide-img--desktop-only']}
-          widths={[640, 1024, 1600, 2400]}
-          sizes="100vw"
+          widths={widthsFor(image)}
+          sizes={SIZES}
           loading={i === 0 ? 'eager' : 'lazy'}
           fetchpriority={i === 0 ? 'high' : 'auto'}
           style={position ? `--pos: ${position}` : undefined}
@@ -33,8 +44,8 @@ const { images, interval } = Astro.props;
             src={mobileImage}
             alt=""
             class="hero__slide-img hero__slide-img--mobile-only"
-            widths={[480, 768, 1080]}
-            sizes="100vw"
+            widths={widthsFor(mobileImage)}
+            sizes={SIZES}
             loading={i === 0 ? 'eager' : 'lazy'}
             fetchpriority={i === 0 ? 'high' : 'auto'}
             style={mobilePosition ? `--pos: ${mobilePosition}` : undefined}

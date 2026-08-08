@@ -11,6 +11,26 @@ interface Props {
 
 const { portrait, portraitPosition, name, lang } = Astro.props;
 const t = useTranslations(lang);
+
+// The frame is a 4/5 portrait. `object-fit: cover` on a source that's wider
+// than that scales it up until its *height* fills the frame, so the image is
+// actually painted wider than the frame and the sides are cropped — a
+// landscape photo ends up rendered ~1.9x the frame's width. `sizes` has to
+// describe that painted width, not the frame, or the browser picks a
+// candidate meant for the frame and the result looks soft on retina.
+const FRAME_RATIO = 4 / 5;
+const COLUMN_VW = { mobile: 80, desktop: 37 };
+// The container stops growing at 1440px, so past that the painted width is
+// fixed and a plain vw would keep asking for ever-larger files.
+const COLUMN_MAX_PX = 1440 * 0.425;
+const coverScale = Math.max(1, portrait.width / portrait.height / FRAME_RATIO);
+const sizes = [
+  `(max-width: 56em) ${Math.round(COLUMN_VW.mobile * coverScale)}vw`,
+  `min(${Math.round(COLUMN_VW.desktop * coverScale)}vw, ${Math.round(COLUMN_MAX_PX * coverScale)}px)`,
+].join(', ');
+
+// Reaches far enough for 2-3x displays; capped so Astro never upscales.
+const widths = [600, 900, 1200, 1600, 2000, 2600, 3200].filter((w) => w <= portrait.width);
 ---
 
 <section id="bio" class="bio">
@@ -20,8 +40,8 @@ const t = useTranslations(lang);
         src={portrait}
         alt={`Portrait of ${name}`}
         class="bio__portrait"
-        widths={[400, 700, 1000, 1400]}
-        sizes="(max-width: 56em) 80vw, 32vw"
+        widths={widths}
+        sizes={sizes}
         style={portraitPosition ? `--pos: ${portraitPosition}` : undefined}
       />
     </div>
