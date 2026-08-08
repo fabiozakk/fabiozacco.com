@@ -1,5 +1,6 @@
 ---
-portrait: ../../../assets/bio/portrait.jpg
+portrait: ../../../../assets/bio/fabio-bio.jpg
+portraitPosition: ''
 ---
 
 Fabio Zacco, musicista e compositore, è nato a Ragusa, in Sicilia, nel 1986. Diplomato in
@@ -29,5 +30,5 @@ originali e con **X-Factor** nel ruolo di orchestratore, produce brani per artis
 emergenti e ha inoltre composto musiche aggiuntive per il thriller "Daemon Mind", diretto
 dal regista francese **Jason Fite**.
 
-***Fabio ama fondere suoni, stili e linguaggi moderni con quelli della tradizione classica,
-con l'obiettivo di creare mondi sonori sempre più particolari.***
+\*\*\*Fabio ama fondere suoni, stili e linguaggi moderni con quelli della tradizione classica,
+con l'obiettivo di creare mondi sonori sempre più particolari.\*\*\*

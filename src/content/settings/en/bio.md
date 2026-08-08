@@ -1,5 +1,6 @@
 ---
-portrait: ../../../assets/bio/portrait.jpg
+portrait: ../../../../assets/bio/fabio-bio.jpg
+portraitPosition: ''
 ---
 
 Fabio Zacco, musician and composer, was born in Ragusa, Sicily, in 1986. A graduate in
@@ -26,8 +27,8 @@ You" by Queen and Ben Elton.
 Beyond live performance, Fabio devotes himself to composition, arrangement, and
 production. He has collaborated for several years with **Mediaset** on original music and
 with **X-Factor** as an orchestrator, produces songs for emerging artists, and composed
-additional music for the thriller "Daemon Mind," directed by French director **Jason
-Fite**.
+additional music for the thriller "Daemon Mind," directed by French director \*\*Jason
+Fite\*\*.
 
-***Fabio loves blending modern sounds, styles, and language with those of the classical
-tradition, aiming to create increasingly distinctive sound worlds.***
+\*\*\*Fabio loves blending modern sounds, styles, and language with those of the classical
+tradition, aiming to create increasingly distinctive sound worlds.\*\*\*
